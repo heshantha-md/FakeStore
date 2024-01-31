@@ -3,10 +3,53 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "ProductDetailsViewModelTests.testProductDetailsViewModeladdToCartInvalidProductFail():ProductDetailsViewModelTests.swift">
+         contextName = "Product.update(with:):Product.swift">
          <PersistentStrings>
             <PersistentString
-               value = "">
+               value = "product.isFavorite">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProductsFetcher.fetchCategories():ProductsFetcher.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "categories">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProductDetailsViewModel.addToCart():ProductDetailsViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "cartItems">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in ProductListingView.body.getter:ProductListingView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "product">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProductDetailsView.addToCart():ProductDetailsView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "item.quantity">
+            </PersistentString>
+            <PersistentString
+               value = "nItem.quantity">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProductDetailsViewModelTests.testProductDetailsViewModeladdToCartValidProductSuccess():ProductDetailsViewModelTests.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "viewModel.cartItems.count">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -22,10 +65,35 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ProductsFetcher.fetchCategories():ProductsFetcher.swift">
+         contextName = "ProductsFetcher.fetchProducts():ProductsFetcher.swift">
          <PersistentStrings>
             <PersistentString
-               value = "categories">
+               value = "products.ratings.rate">
+            </PersistentString>
+            <PersistentString
+               value = "products[0].rating.count">
+            </PersistentString>
+            <PersistentString
+               value = "products">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in HomeView.body.getter:HomeView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "productsFetcher.products">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in ProductListingView.body.getter:ProductListingView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "product">
+            </PersistentString>
+            <PersistentString
+               value = "self.product">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -46,63 +114,6 @@
             </PersistentString>
             <PersistentString
                value = "service?.categories.first(where: { $0.isSelected == true || $0.isSelected == false } )">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ProductDetailsView.addToCart():ProductDetailsView.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "nItem.quantity">
-            </PersistentString>
-            <PersistentString
-               value = "item.quantity">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ProductDetailsViewModelTests.testProductDetailsViewModeladdToCartValidProductSuccess():ProductDetailsViewModelTests.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "viewModel.cartItems.count">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "Product.update(with:):Product.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "product.isFavorite">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ProductDetailsViewModel.addToCart():ProductDetailsViewModel.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "cartItems">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #2 in HomeView.body.getter:HomeView.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "productsFetcher.products">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "ProductsFetcher.fetchProducts():ProductsFetcher.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "products.ratings.rate">
-            </PersistentString>
-            <PersistentString
-               value = "products">
-            </PersistentString>
-            <PersistentString
-               value = "products[0].rating.count">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -129,6 +140,14 @@
             </PersistentString>
             <PersistentString
                value = "(response as? HTTPURLResponse)?.statusCode">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProductDetailsViewModelTests.testProductDetailsViewModeladdToCartInvalidProductFail():ProductDetailsViewModelTests.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

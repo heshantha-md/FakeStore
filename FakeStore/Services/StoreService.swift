@@ -48,7 +48,7 @@ class StoreService {
     }
 }
 
-// MARK: - EXTENSION
+// MARK: - STATIC PROPERTIES
 extension StoreService {
     static let mocCategories: Categories = [Category(name: "men's clothing", icon: "staroflife.fill"),
                                             Category(name: "jewelery", icon: "staroflife.fill")]

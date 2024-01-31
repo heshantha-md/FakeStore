@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct FakeStoreApp: App {
+    // MARK: - PROPERTIES
     var sharedModelContainer: ModelContainer = {
         let schema = Schema(FakeStoreApp.modelContainer)
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -21,21 +22,21 @@ struct FakeStoreApp: App {
         }
     }()
 
-    @State private var storeService = StoreService(manager: NetworkManager()) //StoreService(manager: MocNetworkManager())
-    @State private var routeManager = RouteManager()
+    @State private var storeService = StoreService(manager: NetworkManager())
     @State private var errorManager = ErrorManager()
-     
+    
+    // MARK: - BODY
     var body: some Scene {
         WindowGroup {
             RootView()
         }
         .modelContainer(sharedModelContainer)
         .environment(storeService)
-        .environment(routeManager)
         .environment(errorManager)
     }
 }
 
+// MARK: - STATIC PROPERTIES
 extension FakeStoreApp {
     static let modelContainer: [any PersistentModel.Type] = [Category.self, Product.self, CartItem.self]
 }

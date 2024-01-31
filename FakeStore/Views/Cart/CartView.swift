@@ -12,7 +12,6 @@ struct CartView: View {
     // MARK: - PROPERTIES
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
-    
     @Query() private var cartItems: CartItems
     @Query(sort: \Product.title, order: .reverse) private var products: Products
     
@@ -21,34 +20,36 @@ struct CartView: View {
     
     // MARK: - BODY
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 12) {
+            // MARK: - Tool Bar
             HStack {
-                Text("Cart")
+                // MARK: - Tool Bar Title
+                Text(Constants.CART)
                     .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .modifier(PrimaryTextStyle())
                 
                 Spacer()
                 
+                // MARK: - Trailing Button
                 HStack(spacing: 20) {
-                    Button {
+                    SecondaryButton(action: { _ in
                         isEditing.toggle()
-                    } label: {
-                        Image(systemName: isEditing ? "trash.fill" : "trash")
-                            .font(.title3)
-                    } // BUTTON
+                    }, sfSymbol: .constant(isEditing ? "trash.fill" : "trash"),
+                       color: Colors.BLUE_GRADIENT,
+                       buttonBackground: .cyan)
                     
-                    Button {
+                    SecondaryButton(action: { _ in
                         dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.title3)
-                    } // BUTTON
+                    }, sfSymbol: .constant("xmark"),
+                       color: Colors.BLUE_GRADIENT,
+                       buttonBackground: .cyan)
                 } // HSTACK
             } // HSTACK
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 20)
             
+            // MARK: - Cart Item List
             List {
-                Section("Items in your cart") {
+                Section(Constants.ITEMS_IN_YOUR_CART) {
                     ForEach(viewModel.cartItems.indices, id:\.self) { index in
                         if let product = viewModel.products.first(where: { $0.id == viewModel.cartItems[index].id }) {
                             HStack {
@@ -57,20 +58,22 @@ struct CartView: View {
                                     .fontWeight(.bold)
                                     .padding(.vertical, 5)
                                     .padding(.horizontal, 10)
-                                    .foregroundStyle(.white)
                                     .background {
-                                        RoundedRectangle(cornerRadius: 10)
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
                                             .fill(.gray.opacity(0.5))
                                     } // BACKGROUND
                                 
                                 Group {
+                                    // MARK: - Product Title
                                     Text(product.title)
                                     
                                     Spacer()
                                     
-                                    Text("£\(product.price.asPrice)")
+                                    // MARK: - Product Price
+                                    Text("\(Constants.currencySymbol + product.price.asPrice)")
                                         .modifier(PriceTag())
                                     
+                                    // MARK: - Product Quantity
                                     HStack {
                                         Image(systemName: "plus.circle.fill")
                                             .onTapGesture {
@@ -101,29 +104,47 @@ struct CartView: View {
                         }
                     } // LOOP
                     .onDelete(perform: viewModel.deleteItems(at:))
+                    .listRowBackground(Color.clear)
+                    .listRowSeparatorTint(.white)
+                    .listSectionSeparator(.hidden)
                 } // SECTION
             } // LIST
             .listStyle(.plain)
+            .background(.clear)
             .environment(\.editMode, isEditing ? .constant(.active) : .constant(.inactive))
             
+            Divider()
+                .background(Colors.WHITE_DIVIDER_GRADIENT)
+            
+            // MARK: - Cart Total
             HStack {
-                Text("Total")
+                Text(Constants.TOTAL)
+                    .modifier(PrimaryTextStyle())
                 Spacer()
-                Text("£\(viewModel.cartTotal.asPrice)")
-                    .fontWeight(.heavy)
+                Text("\(Constants.currencySymbol + viewModel.cartTotal.asPrice)")
+                    .modifier(PrimaryTextStyle())
             } // HSTACK
             .font(.title3)
             .padding(.horizontal, 20)
-            .padding(.bottom, 20)
+            .padding(.bottom, 23)
+            .zIndex(1)
             
-            Button("Buy".uppercased()) {
+            // MARK: - Pay button
+            PrimaryButton(title: Constants.PAY.uppercased(),
+                          loadingSymbol: "sterlingsign.circle.fill",
+                          action: {
                 // TODO: Need to implementing buy feature
-            } // BUTTON
-            .buttonStyle(PrimaryButton(disabled: viewModel.cartItems.count == 0))
-            .disabled(viewModel.cartItems.count == 0)
+            }, disabled: viewModel.cartItems.count == 0)
             .padding(.horizontal, 10)
         } // VSTACK
+        .foregroundStyle(.white)
         .padding(.vertical, 20)
+        .background {
+            // MARK: - Gradient Bottom Sheet
+            GradientBottomSheet(backgroundColor: Colors.BLUE_GRADIENT,
+                                cornerRadius: 10)
+        }
+        .background(Color.clear)
         .onChange(of: cartItems, initial: true) {
             viewModel.cartItems = cartItems
             Task {
@@ -156,4 +177,5 @@ struct CartView: View {
     CartView()
         .modelContainer(for: FakeStoreApp.modelContainer, inMemory: false)
         .environment(StoreService(manager: MocNetworkManager()))
+        .environment(ErrorManager())
 }

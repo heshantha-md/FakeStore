@@ -15,27 +15,49 @@ struct CartToolBarItem: View {
     @State private var itemCount: Int = 0
     @State private var isSheetPresented = false
     @State private var sheetSize: SheetSize = .medium
+    @State private var countBubbleAngle: Double = 0
     
     // MARK: - BODY
     var body: some View {
-        Button {
+        SecondaryButton(action: { layout in
             isSheetPresented.toggle()
-        } label: {
-            Image(systemName: "cart.fill")
-                .font(.title3)
-                .foregroundStyle(.black)
-        } // BUTTON
+        }, sfSymbol: .constant("cart.fill"),
+           color: Colors.GOLD_GRADIENT,
+           buttonBackground: .white)
         .overlay(alignment: .topTrailing) {
-            Text("\(itemCount)")
-                .frame(width: 15, height: 15)
-                .font(.system(size: 9, weight: .bold))
-                .foregroundStyle(.white)
-                .padding(2)
-                .background {
+            ZStack {
+                Group {
                     Circle()
-                        .fill(.red)
+                        .fill(Colors.RED_GRADIENT)
+                    
+                    Circle()
+                        .foregroundStyle(.black.opacity(0.2))
+                    
+                    Circle()
+                        .foregroundStyle(.black.opacity(0.15))
+                        .blur(radius: 0.5)
+                        .offset(x: -1, y: -1)
+                    
+                    Circle()
+                        .foregroundStyle(Colors.RED_GRADIENT)
+                        .padding(1)
+                        .blur(radius: 1)
                 }
-                .opacity(itemCount > 0 ? 1 : 0)
+            }
+            .frame(width: 20, height: 20)
+            .overlay {
+                Text("\(itemCount)")
+                    .frame(width: 15, height: 15)
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundStyle(.white)
+                    .rotation3DEffect(Angle(degrees: countBubbleAngle > 0 ? countBubbleAngle : 0), axis: (x: 0, y: 1, z: 0))
+            }
+            .rotation3DEffect(Angle(degrees: countBubbleAngle), axis: (x: 0, y: 1, z: 0))
+            .offset(x: 5, y: -10)
+            .shadow(color: .white.opacity(0.5), radius: 5, x: -2, y: -2)
+            .shadow(color: .gray.opacity(0.5), radius: 3, x: 3, y: 3)
+            .animation(.bouncy(duration: 1, extraBounce: 0.3), value: countBubbleAngle)
+//            .opacity(itemCount > 0 ? 1 : 0)
         } // OVERLAY
         .onChange(of: cartItems, initial: true) {
             Task {
@@ -64,6 +86,7 @@ struct CartToolBarItem: View {
                             }
                         }
                 ) // GESTURE
+                .background(Color.clear)
         } // SHEET
     } // BODY
 } // STRUCT
@@ -84,6 +107,14 @@ extension CartToolBarItem {
     @MainActor
     private func updateCount() async {
         itemCount = cartItems.count
+        await rotateCountBubble()
+    }
+    
+    @MainActor
+    private func rotateCountBubble() async {
+        withAnimation {
+            countBubbleAngle += 180
+        }
     }
     
     private func isVertical(width: Double, height: Double) -> Bool {

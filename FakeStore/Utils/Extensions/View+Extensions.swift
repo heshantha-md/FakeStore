@@ -45,7 +45,7 @@ extension View {
     @MainActor
     func delete(items: [any PersistentModel], in model: ModelContext) async {
         items.forEach { item in
-            withAnimation {
+            DispatchQueue.main.async {
                 model.delete(item)
             }
         }

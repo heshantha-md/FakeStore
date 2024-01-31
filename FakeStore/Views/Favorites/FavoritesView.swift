@@ -11,36 +11,17 @@ import SwiftData
 struct FavoritesView: View {
     // MARK: - PROPERTIES
     @Environment(\.modelContext) var modelContext
-    
     @Query(sort: \Category.name) private var categories: Categories
     @Query(filter: #Predicate<Product> { product in
         product.isFavorite == true
     }, sort: \Product.title, order: .reverse) private var products: Products
     
-    @State private var viewModel = StoreViewModel()
-    @State private var productListingGridLayout: GridItems = []
-    
-    init(service: StoreService) {
-        viewModel = StoreViewModel(service: service)
-    }
+    @State var viewModel: StoreViewModel
     
     // MARK: - BODY
     var body: some View {
         // MARK: - PRODUCT VIEW
-        ProductsView(productListingGridLayout: productListingGridLayout)
-            .navigationTitle("Favorites")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    CartToolBarItem()
-                }
-                
-                ToolbarItem {
-                    GridToolBarItem(didChageLayout: { layout in
-                        productListingGridLayout = layout
-                    })
-                }
-            } // TOOLBAR
+        ProductsView()
             .onChange(of: categories, initial: true) {
                 Task {
                     await viewModel.set(categories: categories)
@@ -67,9 +48,7 @@ struct FavoritesView: View {
 
 // MARK: - PREVIEW
 #Preview {
-    NavigationStack {
-        FavoritesView(service: StoreService(manager: MocNetworkManager()))
-    }
+    FavoritesView(viewModel: StoreViewModel(service: StoreService(manager: MocNetworkManager())))
     .modelContainer(for: FakeStoreApp.modelContainer, inMemory: false)
     .environment(ErrorManager())
 }

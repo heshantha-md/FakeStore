@@ -8,6 +8,7 @@
 import Foundation
 
 extension Double {
+    // MARK: - Convert String decimal value to Two decimal points
     var asPrice: String {
         return String(format: "%.2f", self)
     }

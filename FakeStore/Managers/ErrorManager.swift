@@ -32,10 +32,10 @@ struct ErrorAlertViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .alert(isPresented: .constant(manager.errorMessage != nil)) {
-                Alert(title: Text("Error"),
-                      message: Text(manager.errorMessage ?? "Something Went Wrong"),
-                      dismissButton: .default(Text("OK")) {
-                        manager.errorMessage = nil
+                Alert(title: Text(Constants.ERROR),
+                      message: Text(manager.errorMessage ?? Constants.SOMETHING_WENT_WRONG),
+                      dismissButton: .default(Text(Constants.OK)) {
+                            manager.errorMessage = nil
                       }
                 )
             }

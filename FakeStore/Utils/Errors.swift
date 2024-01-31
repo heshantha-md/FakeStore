@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - FETCH ERROR
 enum FetchError: LocalizedError {
     case badRequest, badJSON
     
@@ -20,6 +21,7 @@ enum FetchError: LocalizedError {
     }
 }
 
+// MARK: - VALIDATION ERROR
 enum ValidationError: LocalizedError {
     case emptyProduct
     

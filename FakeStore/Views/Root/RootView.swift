@@ -15,39 +15,42 @@ struct RootView: View {
     @Query() private var products: Products
     
     @Environment(StoreService.self) var productService
-    @Environment(RouteManager.self) var router
     @Environment(ErrorManager.self) var errorManager
+    @State private var selectedTabIndex = 0
+    @AppStorage("isTabBarHidden") var isTabBarHidden = false
     
     // MARK: - BODY
     var body: some View {
-        @Bindable var router = router
-        
-        TabView() {
-            NavigationStack(path: $router.homeNavPath) {
-                StoreView(service: productService)
+        ZStack {
+            // MARK: - Tab Roots
+            switch selectedTabIndex {
+            case 0:
+                withAnimation {
+                    StoreView(viewModel: StoreViewModel(service: productService))
+                }
+            case 1:
+                withAnimation {
+                    FavoritesView(viewModel: StoreViewModel(service: productService))
+                }
+            case 2:
+                withAnimation {
+                    SettingsView()
+                }
+            default:
+                withAnimation {
+                    EmptyView()
+                }
             }
-            .tabItem {
-                Label("Store", systemImage: "storefront")
-            }
-            
-            NavigationStack(path: $router.favoriteNavPath) {
-                FavoritesView(service: productService)
-            }
-            .tabItem {
-                Label("Favorites", systemImage: "heart")
-            }
-            
-            NavigationStack(path: $router.settingsNavPath) {
-                SettingsView()
-            }
-            .tabItem {
-                Label("Settings", systemImage: "gear")
-            }
-        } // TAB VIEW
-        .errorAlert()
-        .onChange(of: router.currentTab, initial: false) {
-            router.resetNavigationPaths()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+        .overlay(alignment: .bottom) {
+            // MARK: - Tab Bar
+            AppTabBar(tabIndex: $selectedTabIndex)
+                .frame(height: 60, alignment: .bottom)
+                .padding(.horizontal, 20)
+                .opacity(isTabBarHidden ? 0 : 1)
+        }
+        .errorAlert() // MARK: - Alert Handler
         .onChange(of: productService.categories, initial: true) {
             Task {
                 await self.sync(newCategories: productService.categories, with: categories, in: modelContext)
@@ -74,6 +77,5 @@ struct RootView: View {
     RootView()
         .modelContainer(for: FakeStoreApp.modelContainer, inMemory: false)
         .environment(StoreService(manager: MocNetworkManager()))
-        .environment(RouteManager())
         .environment(ErrorManager())
 }
